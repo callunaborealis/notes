@@ -252,7 +252,23 @@ lspci -k | grep -A 2 -E "(VGA|3D)"
 
 We don't bother with Wayland for now until [it works with SDDM](https://wiki.archlinux.org/title/Wayland#Display_managers).
 
-If not, proceed with using `nvidia` proprietary drivers, which supports better optimisation.
+<hr />
+
+<details>
+<summary>Installing community NVIDIA drivers</summary>
+<br />
+This provides the DRI driver for 3D acceleration, and provides the DDX driver 2D acceleration in Xorg.
+
+```bash
+pacman -S mesa lib32-mesa xf86-video-nouveau
+```
+
+https://wiki.archlinux.org/title/Nouveau#Installation
+
+</details>
+<br />
+<details>
+<summary>Installing official NVIDIA drivers (Currently broken)</summary><br />
 
 ```bash
 # root@new-arch-partition
@@ -269,7 +285,7 @@ vim /etc/pacman.conf
 pacman -Syu # multilib should be now listed as a package database.
 
 
-# We do not install lib32-nvidia-utils, no use for it yet
+# We do not install nvidia and nvidia-utils as it breaks
 pacman -S nvidia nvidia-utils
 # We need to run mkinitcpio -P after nvidia updates so we put this in a pacman hook
 mkdir /etc/pacman.d/hooks
@@ -308,6 +324,9 @@ vim /etc/mkinitcpio.conf
 # HOOKS=(... shutdown)
 #
 ```
+
+</details>
+<hr />
 
 ```bash
 pacman -S plasma-meta
