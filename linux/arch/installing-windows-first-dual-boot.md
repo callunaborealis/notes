@@ -68,6 +68,7 @@ arch-chroot `/mnt`
 vim /etc/locale.gen
 # Comment out en_US.UTF-8, UTF-8 and other required locales
 locale-gen
+# You can set your own default locale here
 echo 'LANG=en_US.UTF-8' >> /etc/locale.conf
 exit
 ```
@@ -255,7 +256,7 @@ We don't bother with Wayland for now until [it works with SDDM](https://wiki.arc
 <hr />
 
 <details>
-<summary>Installing community NVIDIA drivers</summary>
+<summary>Installing community NVIDIA drivers (Works well but 3D games have considerable frame drops on Steam)</summary>
 <br />
 This provides the DRI driver for 3D acceleration, and provides the DDX driver 2D acceleration in Xorg.
 
@@ -268,7 +269,7 @@ https://wiki.archlinux.org/title/Nouveau#Installation
 </details>
 <br />
 <details>
-<summary>Installing official NVIDIA drivers (Currently broken)</summary><br />
+<summary>Installing official NVIDIA drivers (Currently freezes on boot)</summary><br />
 
 ```bash
 # root@new-arch-partition
@@ -358,9 +359,42 @@ pacman -S sddm
 systemctl enable sddm
 ```
 
-It should have worked at this point, but I'm back to the original position. This sucks, so I might use another Desktop Manager.
+## Setting up the KDE user preferences and applications
 
-Kindred spirits: https://bugs.archlinux.org/task/76074
+### Time
+Set time to 24 hours, showing seconds.
+
+### Double click to open files and folders on Dolphin
+
+Workspace behavior -> General behavior -> Clicking files or folders -> Selects them
+
+### Applications
+
+Install a firewall
+
+```bash
+sudo pacman -S ufw
+```
+
+Install Firefox and Firefox Developer Edition.
+
+```bash
+sudo pacman -S firefox firefox-developer-edition
+```
+
+### Steam
+
+
+```bash
+pacman -S steam
+```
+
+<hr />
+
+<details>
+<summary>If you have installed nouveau</summary>
+<br />
+Choose the last packages (Do not insall `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
 
 ## References
 
