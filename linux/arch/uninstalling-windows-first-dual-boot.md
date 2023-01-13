@@ -55,6 +55,8 @@ efibootmgr --boot-num 000Y --delete-bootnum
 
 Caution before proceeding. You will not be able to go back after executing the following scripts. Next steps: Reformat the faulty extended boot, swap and root drives.
 
+If you want to reallocate your partitions instead, read [how to do so here](./initialising-partitions.md).
+
 ```bash
 # root@archiso
 swapoff -a
@@ -69,5 +71,6 @@ mkswap -L "swap" /dev/swap_part
 We don't need to make changes to the partitions since we are just doing a clean re-install.
 
 ## Next steps
+
 
 - [Installing Arch Linux on a Windows PC](./installing-windows-first-dual-boot.md)

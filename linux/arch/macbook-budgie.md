@@ -3,6 +3,7 @@
 ## Pre-requisites
 
 - [Download and set up an Arch installation media on an external drive](./create-installation-media.md).
+- [Set up partitions](./initialising-partitions.md)
 
 ## Booting up the live environment
 

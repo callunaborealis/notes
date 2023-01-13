@@ -4,7 +4,7 @@
 
 - [Created and booted into installation media](./create-installation-media.md)
 
-- [Windows is installed first, and UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md).
+- [Windows is installed first, and UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md). If not, [set up partitions first](./initialising-partitions.md).
 
 ## Steps
 

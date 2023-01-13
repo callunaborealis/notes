@@ -21,6 +21,8 @@ Use Windows to shrink `C:\` such that you will have enough space for installing 
 
 ### Set up UEFI/GPT layout for a single hard drive
 
+See how to [set up partitions here](./initialising-partitions.md).
+
 - around 500M for Linux extended boot (Code 136)
   - Because the Windows EFI boot loader is only 100MB, it's too small to add other OS boot loaders. So we need an [extendible boot loader as a partition](https://wiki.archlinux.org/title/Systemd-boot#Installation_using_XBOOTLDR) to allow a dual boot.
 - around 8GB for Linux swap (Code 19) - This was a personal choice as I have 32GB total RAM, and this was recommended by a [poll of Arch users](https://opensource.com/article/19/2/swap-space-poll). A swap drive is also optional if you rather have swap files instead of swap drives.
