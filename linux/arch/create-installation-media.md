@@ -43,8 +43,12 @@ sudo dd if=/Users/calluna/Downloads/archlinux-2022.04.05-x86_64.iso of=/dev/disk
 - Restart your PC and bring up BIOS boot loader (usually F2 when you see the default splash screen).
 - Find the boot menu and load the UEFI BIOS which should be available as a boot option and enter
 
-# Next steps
+## Next steps
 
 - [Installing Arch Linux for a Windows Dual Boot](./installing-windows-first-dual-boot.md)
 - [Initialising partitions](./initialising-partitions.md)
 - [Uninstalling Arch Linux for a Windows Dual Boot](./uninstalling-windows-first-dual-boot.md)
+
+## References
+
+- [Using macOS dd](https://wiki.archlinux.org/title/USB_flash_installation_medium#Using_macOS_dd)
