@@ -29,15 +29,7 @@ more /mnt/etc/fstab # Verify file created with correct entries
 
 Now we can enter the newly initialised `/mnt` and change some default configurations.
 
-First, we ensure that time [set normally as shown](https://wiki.gentoo.org/wiki/System_time#Dual_booting_with_Windows).
-
-Systems that dual boot with another operating system, such as Windows, generally have a struggle over the hardware clock. To make Windows not adjust the hardware clock back to local time, add the following registry entry.
-
-- Open regedit then browse to `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation`
-- Create a new QWORD value (for 64-bit Windows), or DWORD value (for 32-bit Windows), variable called `RealTimeIsUniversal` and modify its hexadecimal value to 1.
-- Reboot the system to see the clock in UTC time.
-
-Reference for setting Windows default time: https://wiki.gentoo.org/wiki/System_time#Dual_booting_with_Windows
+Ensure [universal time is also used](./using-universal-time.md) if you have an existing Windows first partition, in order to prevent mismatched time zone expectations between partitions.
 
 ```bash
 # root@archiso
