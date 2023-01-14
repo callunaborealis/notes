@@ -3,8 +3,8 @@
 ## Pre-requisites
 
 - [Created and booted into installation media](./create-installation-media.md)
-
-- [Windows is installed first, and UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md). If not, [set up partitions first](./initialising-partitions.md).
+- [1G EFI is created as the first drive](./initialising-partitions.md) with [an existing Windows 11 first set up](./uninstalling-windows.md)
+- [UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md). If not, [set up partitions first](./initialising-partitions.md).
 
 ## Steps
 
