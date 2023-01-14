@@ -48,9 +48,9 @@ efibootmgr
 
 efibootmgr # To list options
 # Where 000X is the boot order value of "Linux Boot Manager" that we will replace later
-efibootmgr --boot-num 000X --delete-bootnum
+efibootmgr --bootnum 000X --delete-bootnum
 # Where 000X is the boot order value of "GRUB" that we will replace later
-efibootmgr --boot-num 000Y --delete-bootnum
+efibootmgr --bootnum 000Y --delete-bootnum
 ```
 
 Caution before proceeding. You will not be able to go back after executing the following scripts. Next steps: Reformat the faulty extended boot, swap and root drives.
