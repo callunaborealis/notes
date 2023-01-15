@@ -89,14 +89,14 @@ Next, we create a non root administrative user. Using the previous example, Sam 
 ```bash
 # root@archiso
 arch-chroot `/mnt`
-useradd -m you # Creates a "/home/you" account. You can replace you with whatever else.
-passwd you
+useradd -m {you} # Creates a "/home/you" account. You can replace you with whatever else.
+passwd {you}
 
 # Give yourself sudo privileges
 pacman -S sudo
 # The sudo group is "wheel"
 # To add your user to the existing "wheel" group
-usermod -aG wheel you
+usermod -aG wheel {you}
 
 visudo
 # Under the line "Uncomment to allow members of the group wheel to execute any command...
@@ -200,30 +200,36 @@ Next, we generate the GRUB configuration file via `grub-mkconfig`.
 ```bash
 # root@archiso
 arch-chroot /mnt
-# Modify default mkconfig options as the actual config file is generated after updating certain files
-# so we need to specify any custom kernel parameters
 vim /etc/default/grub
-exit
+```
+```ini
+# /etc/default/grub
+# Change from 5 seconds (too short) to 60 seconds to choose the partition to load
+GRUB_TIMEOUT=60
+# Add splash (and nvidia-drm.modeset=1 required for plasma-wayland-session)
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
+GRUB_DISABLE_OS_PROBER=false
+```
+```bash
+os-prober
 ```
 
-We check if we are able to detect the other OSes you want as entries in GRUB via `os-prober` within `arch-chroot`.
+Hopefully it prints out:
 
 ```bash
-# root@archiso
-arch-chroot /mnt
-os-prober # Check if Windows can be detected. If not, reboot the machine and try again.
-# -----
-# Change from 5 seconds (too short) to 60 seconds to choose the partition to load
-# GRUB_TIMEOUT=60
-# Add splash (and nvidia-drm.modeset=1 required for plasma-wayland-session)
-# GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
-# GRUB_DISABLE_OS_PROBER=false
-# -----
+/dev/windows_efi_part/EFI/Microsoft/Boot/bootmgfw.efi:Windows Boot Manager:Windows:efi
+```
+If we are not able to detect Windows, that is fine. `os-prober` usually will not be able to detect Windows within the Arch installation media.
+
+Run `grub-mkconfig` anyway so you can use GRUB to enter your newly created Arch partition to check `os-prober` again.
+
+```bash
 grub-mkconfig -o /boot/grub/grub.cfg
 exit
 ```
 
-If we are not able to detect the other OSes, you can try to manually boot into the newly created partition (via BIOS) as root and check `os-prober`.
+Now we can try to reboot the newly created partition (via BIOS) as root and check `os-prober` while inside the newly created Arch Linux partition.
+
 
 ```bash
 # root@archiso
@@ -231,7 +237,7 @@ reboot
 # Log in as root Arch Linux on your target drive.
 # root@new-arch-partition
 os-prober
-# Hopefully it will print out:
+# Now that we are @new-arch-partition and not @archiso, hopefully it will print out:
 # /dev/windows_efi_part/EFI/Microsoft/Boot/bootmgfw.efi:Windows Boot Manager:Windows:efi
 grub-mkconfig -o /boot/grub/grub.cfg
 ```
@@ -308,7 +314,7 @@ Target=linux
 Description=Update NVIDIA module in initcpio
 Depends=mkinitcpio
 When=PostTransaction
-## Uneecessary
+## Unnecessary
 # NeedsTargets
 Exec=/usr/bin/mkinitcpio -P
 ## If you want it to run only once and not multiple times
@@ -394,7 +400,7 @@ pacman -S steam
 <details>
 <summary>If you have installed nouveau</summary>
 <br />
-Choose the last packages (Do not insall `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
+Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
 
 ## References
 

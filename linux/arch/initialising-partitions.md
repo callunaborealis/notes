@@ -15,9 +15,13 @@
 
 ```sh
 # Create some kind of EFI partition
-mkfs.fat -F32 /dev/sda1
+mkfs.fat -F32 /dev/shared_efi_part
+mkfs.fat -F32 /dev/windows_recovery_part
+mkfs.fat -F32 /dev/xbootldr_part
 # To create a Linux root / home partition
-mkfs.ext4 /dev/sda2
+mkfs.ext4 /dev/root_part
+# Create a swap drive
+mkswap -L "swap" /dev/swap_part
 ```
 
 ## Next steps
