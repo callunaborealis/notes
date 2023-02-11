@@ -1,0 +1,7 @@
+{
+  "editor.formatOnPaste": true,
+  "files.associations": {
+    ".envrc": "shellscript",
+    ".envrc.example": "shellscript"
+  },
+}
