@@ -402,6 +402,10 @@ pacman -S steam
 <br />
 Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
 
+### Twitter like SVG fonts
+
+Install the AUR package `ttf-twemoji` instead of `ttf-twemoji-color`, as SVG font emojis will only output mono coloured emojis.
+
 ## References
 
 - [Installation Guide](https://wiki.archlinux.org/title/installation_guide)
