@@ -332,6 +332,16 @@ vim /etc/mkinitcpio.conf
 #
 ```
 
+You might also want to specify `COMPRESSION_OPTIONS` as you may face problems generating the `initcpio` image `sudo mkinitcpio -P`
+successfully in the future.
+
+```bash
+vim /etc/mkinitcpio.conf
+##
+# COMPRESSION_OPTIONS=(-v -5 --long)
+#
+```
+
 </details>
 <hr />
 
@@ -405,6 +415,21 @@ Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils`
 ### Twitter like SVG fonts
 
 Install the AUR package `ttf-twemoji` instead of `ttf-twemoji-color`, as SVG font emojis will only output mono coloured emojis.
+
+### No memory error when running `sudo mkinitcpio -P`
+
+```shell
+zstd: error 70 : Write error : cannot write block : No space left on device 
+bsdtar: Write error
+bsdtar: Write error
+==> ERROR: Image generation FAILED: 'bsdtar (step 1) reported an error'
+```
+
+You might want to attempt to add compression options to `/etc/mkinitcpio` options file to allow image generation after package update to proceed successfully.
+
+```conf
+COMPRESSION_OPTIONS=(-v -5 --long)
+```
 
 ## References
 
