@@ -332,12 +332,14 @@ vim /etc/mkinitcpio.conf
 #
 ```
 
-You might also want to specify `COMPRESSION_OPTIONS` as you may face problems generating the `initcpio` image `sudo mkinitcpio -P`
+You might also want to specify both `COMPRESSION` (to suppress `"COMPRESSION_OPTIONS is set without also setting COMPRESSION. Configure COMPRESSION explicitly"` warning) and `COMPRESSION_OPTIONS` as you may face problems generating the `initcpio` image `sudo mkinitcpio -P`
 successfully in the future.
 
 ```bash
 vim /etc/mkinitcpio.conf
 ##
+# See https://wiki.archlinux.org/title/Mkinitcpio#COMPRESSION for other supported algorithms
+# COMPRESSION=zstd
 # COMPRESSION_OPTIONS=(-v -5 --long)
 #
 ```
