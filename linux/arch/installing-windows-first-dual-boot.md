@@ -386,6 +386,31 @@ Set time to 24 hours, showing seconds.
 
 Workspace behavior -> General behavior -> Clicking files or folders -> Selects them
 
+### Terminal: Disabling bracketed paste in your terminal (e.g. KDE's Konsole)
+
+Bracketed paste seems to be switched on by default for Konsole, the default KDE terminal app.
+
+```sh
+# Ctrl+C
+
+some-package-name
+
+# Ctrl+V (with control characters)
+
+sudo pacman -S ^[[200~some-package-name~
+
+```
+
+Add the following line to your shell profile to disable this:
+
+```sh
+printf "\e[?2004l"
+```
+
+**Read more about bracketed paste in terminals**
+- https://cirw.in/blog/bracketed-paste: Author of this feature explains why it is a good thing to have this enabled so you wouldn't accidentally 
+- http://www.xfree86.org/current/ctlseqs.html#Bracketed%20Paste%20Mode
+
 ### Applications
 
 Install a firewall
