@@ -438,6 +438,7 @@ pacman -S steam
 <summary>If you have installed nouveau</summary>
 <br />
 Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
+</details>
 
 ### Twitter like SVG fonts
 
