@@ -459,6 +459,37 @@ You might want to attempt to add compression options to `/etc/mkinitcpio` option
 COMPRESSION_OPTIONS=(-v -5 --long)
 ```
 
+### Missing packages while running `sudo mkinitcpio -P`
+
+You might encounter missing firmware packages, e.g.
+
+```shell
+==> Starting build: '6.9.7-arch1-1'
+  -> Running build hook: [base]
+  -> Running build hook: [udev]
+  -> Running build hook: [modconf]
+  -> Running build hook: [kms]
+==> WARNING: Possibly missing firmware for module: 'ast'
+  -> Running build hook: [keyboard]
+```
+
+| Module | Package |
+| -- | -- |
+| `aic94xx` | `aic94xx-firmware` (AUR) |
+| `ast` | `ast-firmware` (AUR) |
+| `bfa` | `linux-firmware-qlogic` |
+| `bnx2x` | `linux-firmware-bnx2x` |
+| `liquidio` | `linux-firmware-liquidio` |
+| `mlxsw_spectrum` | `linux-firmware-mellanox` |
+| `nfp` | `linux-firmware-nfp` |
+| `qed` | `linux-firmware-qlogic` |
+| `qla1280` | `linux-firmware-qlogic` |
+| `qla2xxx` | `linux-firmware-qlogic` |
+| `wd719x` | `wd719x-firmware` (AUR) |
+| `xhci_pci` | `upd72020x-fw` (AUR) |
+
+See [5.4 Possibly missing firmware for module XXXX in the mkinitcpio docs](https://wiki.archlinux.org/title/Mkinitcpio) for an updated list of packages
+
 ## References
 
 - [Installation Guide](https://wiki.archlinux.org/title/installation_guide)
