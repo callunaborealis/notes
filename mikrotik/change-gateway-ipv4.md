@@ -17,4 +17,4 @@ Under IP > Addresses (i.e. `{mikrotik-device-ip}/webfig/#IP:Addresses`), click o
 ## Uncertainties
 
 - It seems there can be multiple addresses for the bridge interface, e.g. both `192.168.88.1` and `192.168.1.1` can both be set up to access the network. 
-- Disabling the default gateway IP so that only the custom default gateway IP is used
+- How to disable the default gateway IP so that only the custom default gateway IP is used. It usually results in self-assigned non local IPs of connected devices and a loss of Internet connection, resorting to a hard reset of the router
