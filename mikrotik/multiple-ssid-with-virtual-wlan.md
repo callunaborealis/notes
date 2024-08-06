@@ -35,14 +35,6 @@ Under the "Bridge" field, ensure `bridgeLocal` is selected.
 
 Leave all other default settings unmodified, then click "OK".
 
-## Create interface
-
-Under "Interfaces" left tab, select "Interface" top tab (e.g. `{mikrotik-device-ip}/webfig/#Interfaces.Interface`). Ensure newly created virtual WLAN `wlanyv1` is in the list.
-
-Under "Interfaces" left tab, select "Interface" top tab (e.g. `{mikrotik-device-ip}/webfig/#Interfaces.Interface_List`). Click on "Add New". Under the "List" field, select "LAN". Ensure under the "Interface" field, the same bridge interface is selected, which is `"bridgeLocal"` by default.
-
-Leave all other default settings unmodified, then click "OK".
-
 ## Conclusion
 
 Finally, connect your client to the newly created SSID that should be discoverable (unless the virtual WLAN is hidden / disabled when creating it).
