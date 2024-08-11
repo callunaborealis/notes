@@ -10,6 +10,7 @@ Ensure [the custom IP is within range if a custom pool of IPs is used for the IP
 
 Under IP > Addresses (i.e. `{mikrotik-device-ip}/webfig/#IP:Addresses`), click on "Add New".
 
+| Label | Value |
 | --- | --- |
 | Address | `192.168.1.1/24` |
 | Network | `192.168.1.0` |
