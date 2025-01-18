@@ -1,6 +1,7 @@
 # Wi-Fi Passwords
 
 **Tested with:** [MikroTik hAP ac²](https://mikrotik.com/product/hap_ac2) running RouterOS v6.49.15 stable
+**Tested with:** [MikroTik Chateau PRO ax](https://mikrotik.com/product/chateau_pro_ax) running RouterOS v7.15.2
 
 Under "Wireless" left side tab, select the "Security Profiles" top tab (e.g. `#Wireless.Security_Profiles`).
 
