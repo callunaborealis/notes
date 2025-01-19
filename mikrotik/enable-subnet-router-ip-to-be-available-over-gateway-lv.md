@@ -19,3 +19,8 @@ Add 2 new rules:
 
 Position these 2 new rules **above** any broader rule that drops all connections not coming from LAN. A broad rule seems to be always created by default, e.g. `defconf: drop all not coming from LAN`
 
+### Intermediate unmanaged switches will affect connections!
+
+Remember to either **directly connect** the subnet connection to a physical interface of the Mikrotik device. Ensure that there are no intermediate devices (especially unmanaged switches).
+
+It is likely that since unmanaged switches are a black box, they might seem like they are forwarding the same IP addresses correctly but have internally assigned a new IP address via a DHCP server instead, for either security, or to incentivise network users to buy their replacement managed switches instead.
