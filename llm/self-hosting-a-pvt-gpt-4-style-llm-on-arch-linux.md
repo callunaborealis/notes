@@ -82,14 +82,20 @@ huggingface-cli download liuhaotian/llava-v1.5-7b --local-dir ~/.cache/huggingfa
 ### Initialise LLM with its first test run
 
 ```sh
-python -m llava.serve.cli --model-path liuhaotian/llava-v1.5-7b --load-4bit
+python -m llava.serve.cli --model-path liuhaotian/llava-v1.5-7b --image-file=random_img.jpg  --load-4bit --max-new-tokens 256
+
 ```
 
 Unfortunately with my GPU, I was not able to use the `--load-8bit` flag even with SDDM disabled because I'm lacking 100 to 300MB. Clear all background processes that are using your GPU so at least `--load-4bit` can work.
 
+When talking to the LLM, the LLM calls themselves Vicuna and they will be able to analyse the image for you.
+
 ```sh
+# Helps check processes that the Nvidia GPU is running
 nvidia-smi
 ```
+
+Unfortunately, due to the limitations of the GPU, they will run into OOM issues and crash once the conversation drags on or Vicuna has a long reply. I'm still figuring out how to offload conversation history into the CPU.
 
 ## Notes
 
