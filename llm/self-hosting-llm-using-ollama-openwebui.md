@@ -2,7 +2,7 @@
 
 `llava` (Large Language and Vision Assistant): Connects a vision encoder (e.g. CLIP VIT) to an LLM. Based on Vicuna but now accepts open models like Mistral 7B. See <https://ollama.com/library/llava:v1.6>. Licenced as Apache 2.0 (suitable for my open source requirement). For this set up, we will use LLaVa 7B v1.6 (Mistral)
 
-`ollama`: LLM server and Docker-like CLI to manage LLMs. Supports quantization by default. Also supports GPU acceleration via CUDA. See <https://ollama.com/>. Ollama uses Svelte.
+`ollama`: LLM server and Docker-like CLI to manage LLMs. Supports quantization by default. Also supports GPU acceleration via CUDA. See <https://ollama.com/>. 
 
 ```sh
 # Install pyenv, allows different python versions
@@ -28,7 +28,7 @@ ollama list
 ollama run llava:7b-v1.6-mistral-q5_1
 ```
 
-`open-webui` (formerly ollama-webui): Web GUI with a ChatGPT styled UI. 
+`open-webui` (formerly ollama-webui): Web GUI with a ChatGPT styled UI. `open-webui` reportedly uses Svelte.
 
 ```sh
 # Installs docker required for open-webui
