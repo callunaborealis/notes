@@ -39,12 +39,14 @@ sudo usermod -aG docker $USER
 sudo pacman -S nvidia-container-toolkit
 
 # Initialises open-webui container
+# Alternative sources: https://hub.docker.com/r/openeuler/open-webui/tags
 docker run -d --name open-webui --gpus=all -p 3000:8080 \
   -v ollama:/root/.ollama -v openwebui_data:/app/backend/data \
   ghcr.io/open-webui/open-webui:ollama
 ```
 
-- --gpus=all passes our GPU into the container (requires the container toolkit, which we installed).
+- `--gpus=all` passes our GPU into the container (requires the container toolkit, which we installed). However, if Docker hangs up while running open-webui, consider removing
+this flag first.
 
 - `-p 3000:8080`: Maps container port 8080 to your machine host port 3000
 
@@ -59,3 +61,11 @@ docker run -d --name open-webui --gpus=all -p 3000:8080 \
   - Development release: Using the `:dev` tag allows open-webui to have the latest but sometimes buggy features
 
 Once done, open the locally run <https://localhost:3000> (Ensuring that `ollama` is also running separately in the background). From the UI, sign up for an admin account. Click the top right, "Settings", "Admin Settings". Under connections, ensure Ollama API is set as <http://localhost:11434> (You can also verify this link is ollama by opening it on a web browser and receiving a "Ollama is running" message). Do not set tags to ensure all running LLMs are visible on `open-webui`. It might be a little flaky.
+
+For subsequent sessions (if the container was not explicitly removed on your machine):
+
+```sh
+ollama serve
+docker start open-webui
+firefox localhost:3000
+```
