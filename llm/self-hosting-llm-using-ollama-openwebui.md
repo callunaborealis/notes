@@ -69,3 +69,65 @@ ollama serve
 docker start open-webui
 firefox localhost:3000
 ```
+
+## Simplify starting up open-webui via `systemd`
+
+If privacy, security, portability are less of a concern while setting this up on the machine (or if you like the convenience of `systemd`), consider `systemd`:
+
+Setup `ollama` as a `systemd` service
+
+```sh
+sudo vim /etc/systemd/system/ollama.service
+```
+
+```vim
+[Unit]
+Description=ollama
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/$YOU serve
+User=$YOU
+WorkingDirectory=/home/$YOU
+Environment="OLLAMA_MODELS=/home/$YOU/.ollama"
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Setup `open-webui` as a `systemd` service
+
+```sh
+sudo vim /etc/systemd/system/open-webui.service
+```
+
+
+```vim
+[Unit]
+Description=open-webui
+After=network.target docker.service ollama.service
+Requires=docker.service ollama.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run --rm -p 3000:8080 --gpus=all \
+  -v ollama:/root/.ollama \
+  -v open-webui:/app/backend/data \
+  --name open-webui \
+  ghcr.io/open-webui/open-webui:cuda
+ExecStop=/usr/bin/docker stop open-webui
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```sh
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable --now ollama.service open-webui.service
+systemctl status ollama
+systemctl status open-webui
+```
