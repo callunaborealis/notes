@@ -44,31 +44,36 @@ docker run -d --name open-webui --gpus=all -p 3000:8080 \
   -v ollama:/root/.ollama -v openwebui_data:/app/backend/data \
   ghcr.io/open-webui/open-webui:ollama
 
-docker run -d -p 3000:8080 \
+docker run -d \
+ --env PORT=3000 \
+ --network=host \
  --gpus=all \
  --volume ollama:/root/.ollama \
  --volume open-webui:/app/backend/data \
+ --env OLLAMA_BASE_URL=http://127.0.0.1:11434 \
  --name open-webui \
  --restart always \
- ghcr.io/open-webui/open-webui:ollama
+ ghcr.io/open-webui/open-webui:cuda
 ```
 
+- `--env PORT=3000` (or `-e`) sets the port at `3000`. Alternatively, we can use `--publish 3000:8080`to map the container port 8080 to your machine port 3000 but this is ignored with `--network=host` flag
+- `--network=host` is set only if we are unable to connect to the ollama API served locally outside the container
 - `--gpus=all` passes our GPU into the container (requires the container toolkit, which we installed). However, if Docker hangs up while running open-webui, consider removing
 this flag first.
-
-- `-p 3000:8080`: Maps container port 8080 to your machine host port 3000
-
-- `-v` to mount 2 volumes:
+- `--volume` (or `-v`) to mount 2 volumes:
   - `ollama`'s model data (`ollama:/root/.ollama`)
   - `open-webui`'s data (`openwebui_data:/app/backend/data`).
   - This will preserve models downloaded or configs saved on container restart
 
 - Optional: `--restart always` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time.
 - Adding a release tag:
+  - Cuda release: Uses CUDA driver to use your GPU acceleration
   - Stable release: Using the `:ollama` tag provides `ollama` support out of the box
   - Development release: Using the `:dev` tag allows open-webui to have the latest but sometimes buggy features
 
-Once done, open the locally run <https://localhost:3000> (Ensuring that `ollama` is also running separately in the background). From the UI, sign up for an admin account. Click the top right, "Settings", "Admin Settings". Under connections, ensure Ollama API is set as <http://localhost:11434> (You can also verify this link is ollama by opening it on a web browser and receiving a "Ollama is running" message). Do not set tags to ensure all running LLMs are visible on `open-webui`. It might be a little flaky.
+Once done, open the locally run <https://localhost:3000> (Ensuring that `ollama` is also running separately in the background). From the UI, sign up for an admin account. Click the top right, "Settings", "Admin Settings". Under connections, ensure Ollama API is set as <http://localhost:11434> (You can also verify this link is ollama by opening it on a web browser and receiving a "Ollama is running" message). Do not set tags to ensure all running LLMs are visible on `open-webui`.
+
+Restart `docker stop open-webui` / `docker start open-webui` or remove `error` subpath to access the localhost host directly if you are unable to receive the login screen.
 
 For subsequent sessions (if the container was not explicitly removed on your machine):
 
@@ -121,10 +126,12 @@ Requires=docker.service ollama.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run -d -p 3000:8080 \
+ExecStart=/usr/bin/docker run -d \
+ --publish 3000:8080 \
  --gpus=all \
  --volume ollama:/root/.ollama \
- --volume openwebui:/app/backend/data \
+ --volume open-webui:/app/backend/data \
+ --env OLLAMA_BASE_URL=http://127.0.0.1:11434 \
  --name open-webui \
  --restart always \
  ghcr.io/open-webui/open-webui:ollama
