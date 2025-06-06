@@ -42,7 +42,7 @@ sudo pacman -S nvidia-container-toolkit
 # Alternative sources: https://hub.docker.com/r/openeuler/open-webui/tags
 docker run -d --name open-webui --gpus=all -p 3000:8080 \
   -v ollama:/root/.ollama -v openwebui_data:/app/backend/data \
-  ghcr.io/open-webui/open-webui:ollama
+  ghcr.io/open-webui/open-webui:cuda
 ```
 
 - `--gpus=all` passes our GPU into the container (requires the container toolkit, which we installed). However, if Docker hangs up while running open-webui, consider removing
