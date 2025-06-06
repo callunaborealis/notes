@@ -45,7 +45,6 @@ docker run -d --name open-webui --gpus=all -p 3000:8080 \
   ghcr.io/open-webui/open-webui:ollama
 
 docker run -d -p 3000:8080 \
- --network=host \
  --gpus=all \
  --volume ollama:/root/.ollama \
  --volume open-webui:/app/backend/data \
@@ -123,10 +122,9 @@ Requires=docker.service ollama.service
 [Service]
 Restart=always
 ExecStart=/usr/bin/docker run -d -p 3000:8080 \
- --network=host \
  --gpus=all \
  --volume ollama:/root/.ollama \
- --volume open-webui:/app/backend/data \
+ --volume openwebui:/app/backend/data \
  --name open-webui \
  --restart always \
  ghcr.io/open-webui/open-webui:ollama
