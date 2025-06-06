@@ -42,7 +42,16 @@ sudo pacman -S nvidia-container-toolkit
 # Alternative sources: https://hub.docker.com/r/openeuler/open-webui/tags
 docker run -d --name open-webui --gpus=all -p 3000:8080 \
   -v ollama:/root/.ollama -v openwebui_data:/app/backend/data \
-  ghcr.io/open-webui/open-webui:cuda
+  ghcr.io/open-webui/open-webui:ollama
+
+docker run -d -p 3000:8080 \
+ --network=host \
+ --gpus=all \
+ --volume ollama:/root/.ollama \
+ --volume open-webui:/app/backend/data \
+ --name open-webui \
+ --restart always \
+ ghcr.io/open-webui/open-webui:ollama
 ```
 
 - `--gpus=all` passes our GPU into the container (requires the container toolkit, which we installed). However, if Docker hangs up while running open-webui, consider removing
@@ -55,7 +64,7 @@ this flag first.
   - `open-webui`'s data (`openwebui_data:/app/backend/data`).
   - This will preserve models downloaded or configs saved on container restart
 
-- Optional: `--restart` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time.
+- Optional: `--restart always` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time.
 - Adding a release tag:
   - Stable release: Using the `:ollama` tag provides `ollama` support out of the box
   - Development release: Using the `:dev` tag allows open-webui to have the latest but sometimes buggy features
@@ -88,7 +97,7 @@ Requires=docker.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/$YOU serve
+ExecStart=/usr/bin/ollama serve
 User=$YOU
 WorkingDirectory=/home/$YOU
 Environment="OLLAMA_MODELS=/home/$YOU/.ollama"
@@ -113,11 +122,14 @@ Requires=docker.service ollama.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run --rm -p 3000:8080 --gpus=all \
-  -v ollama:/root/.ollama \
-  -v open-webui:/app/backend/data \
-  --name open-webui \
-  ghcr.io/open-webui/open-webui:cuda
+ExecStart=/usr/bin/docker run -d -p 3000:8080 \
+ --network=host \
+ --gpus=all \
+ --volume ollama:/root/.ollama \
+ --volume open-webui:/app/backend/data \
+ --name open-webui \
+ --restart always \
+ ghcr.io/open-webui/open-webui:ollama
 ExecStop=/usr/bin/docker stop open-webui
 
 [Install]
