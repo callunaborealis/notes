@@ -97,7 +97,7 @@ Flags: X - disabled; R - running
 
 # Add firewall rules (We use "ec2_via_wg_address_list" as the list name)
 /ip/firewall/address-list add address=<AWS_EC2_PUBLIC_IP> list=ec2_via_wg_address_list
-/ip/firewall/filter add chain=input src-address-list=ec2_via_wg_address_list protocol=udp dst-port=51820 action=accept comment="allow wg from aws ec2"  
+/ip/firewall/filter add chain=input src-address-list=ec2_via_wg_address_list protocol=udp dst-port=51820 action=accept comment="allow openwebui web app hosted on fragile-aquarium-arch to tx to proxima ec2 instance"
 
 # Check reverse proxy tunnel heath
 /interface/wireguard/peers print detail
@@ -116,7 +116,11 @@ Expose the LAN service internally on the MikroTik router:
 `DST_NAT_HOST_IP` is [the destination network address translated internal host IP address connected locally to the MikroTik router](https://wiki.mikrotik.com/Manual:IP/Firewall/NAT#Destination_NAT), e.g. `192.168.1.50`. It could be a gaming server, web server etc.
 
 ```sh
-/ip/firewall/nat add chain=dstnat src-address=10.200.200.1 protocol=tcp dst-port=3000 action=dst-nat to-address=<DST_NAT_HOST_IP> to-ports=3000 comment="aws ec2 reverse proxy upstream" 
+/ip/firewall/nat add chain=dstnat src-address=10.200.200.1 protocol=tcp dst-port=3000 action=dst-nat to-address=<DST_NAT_HOST_IP> to-ports=3000 comment="aws ec2 reverse proxy upstream"
+# Add firewall rules
+/ip/firewall/filter add chain=input in-interface=ec2_via_wg_interface src-address=10.200.200.1 protocol=icmp action=accept comment="allow ping from aws ec2 instance via wg"  
+/ip/firewall/filter add chain=input in-interface=ec2_via_wg_interface src-address=10.200.200.1 protocol=tcp dst-port=3000 action=accept comment="allow DST_NAT_HOST_IP to tx to aws ec2 instance"
+/ip/firewall/filter add chain=forward in-interface=ec2_via_wg_interface src-address=10.200.200.1 dst-address=<DST_NAT_HOST_IP> protocol=tcp dst-port=3000 action=accept comment="forward wg to DST_NAT_HOST_IP server app"
 ```
 
 Once done, start WireGuard on your EC2 instance:
