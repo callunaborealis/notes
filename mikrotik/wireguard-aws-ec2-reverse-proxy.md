@@ -117,11 +117,44 @@ Expose the LAN service internally on the MikroTik router:
 
 ```sh
 /ip/firewall/nat add chain=dstnat src-address=10.200.200.1 protocol=tcp dst-port=3000 action=dst-nat to-address=<DST_NAT_HOST_IP> to-ports=3000 comment="aws ec2 reverse proxy upstream"
+# Optional (see below): Add hairpin rule to support TCP handshake with WG, especially
+# if Mikrotik router drops anything not coming from 192.168.1.0/24 (as it does by default)
+# Remember to move this above just below the original NAT rule
+/ip/firewall/nat add chain=srcnat src-address=10.200.200.0/30  dst-address=<DST_NAT_HOST_IP> protocol=tcp dst-port=3000  out-interface=bridge action=masquerade comment="masquerade aws ec2 reverse proxy upstream"
 # Add firewall rules
 /ip/firewall/filter add chain=input in-interface=ec2_via_wg_interface src-address=10.200.200.1 protocol=icmp action=accept comment="allow ping from aws ec2 instance via wg"  
 /ip/firewall/filter add chain=input in-interface=ec2_via_wg_interface src-address=10.200.200.1 protocol=tcp dst-port=3000 action=accept comment="allow DST_NAT_HOST_IP to tx to aws ec2 instance"
 /ip/firewall/filter add chain=forward in-interface=ec2_via_wg_interface src-address=10.200.200.1 dst-address=<DST_NAT_HOST_IP> protocol=tcp dst-port=3000 action=accept comment="forward wg to DST_NAT_HOST_IP server app"
 ```
+
+<hr />
+
+**Optional:** Support handshake between WireGuard and <DST_NAT_HOST_IP> host on the MikroTik Router
+
+In the event the connection between WireGuard and the <DST_NAT_HOST_IP> host has problems, debug the connections by:
+
+```sh
+# On AWS EC2, ping the MikroTik router via WireGuard
+curl -I --max-time 5 http://10.200.200.2:3000
+```
+
+```sh
+# On MikroTik, simulateneously listen for the TCP handshake rows coming from WireGuard
+/tool/sniffer/quick interface=all port=3000
+```
+
+If SYN (synchronize) TCP packets are arriving from `ec2_via_wg_interface`, are DNAT-ed and forwarded out via `bridge` or other router interfaces into local destination IP, but the MikroTik router does not send back another TCP packet (e.g. `SYN-ACK` or `RST`) back to the AWS EC2 instance, check the firewall of the MikroTik router.
+
+Finally, on the `DST_NAT_HOST_IP`, if there is any firewall set up (e.g. `ufw`), ensure packets can be sent back to the aws ec2 instance:
+
+```sh
+# 192.168.1.0/24 here is the gateway IP  for 192.168.1.50 (if a custom network IP is used, use it:
+# e.g. 192.168.2.100 -> 192.168.2.0/24 (with the last octet as `0` should be used)
+sudo ufw allow proto tcp from 192.168.1.0/24 to any port 3000
+sudo ufw allow proto tcp from 10.200.200.0/30 to any port 3000
+```
+
+<hr />
 
 Once done, start WireGuard on your EC2 instance:
 ```sh
