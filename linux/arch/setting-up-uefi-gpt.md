@@ -23,7 +23,7 @@ Use Windows to shrink `C:\` such that you will have enough space for installing 
 
 See how to [set up partitions here](./initialising-partitions.md).
 
-- around 1G for Linux extended boot (Code 136). Why 1G? By around mid-2025, even with compression enabled set via `mkinitcpio`, we still need around **500M** for the initial RAM file system (`initramfs`), and another **500M** for the backup `initramfs`.
+- around 1G for Linux extended boot (Code 142). Why 1G? By around mid-2025, even with compression enabled set via `mkinitcpio`, we still need around **500M** for the initial RAM file system (`initramfs`), and another **500M** for the backup `initramfs`.
   - Because the Windows EFI boot loader is only 100MB, it's too small to add other OS boot loaders. So we need an [extendible boot loader as a partition](https://wiki.archlinux.org/title/Systemd-boot#Installation_using_XBOOTLDR) to allow a dual boot.
 - around 8GB for Linux swap (Code 19) - This was a personal choice as I have 32GB total RAM, and this was recommended by a [poll of Arch users](https://opensource.com/article/19/2/swap-space-poll). A swap drive is also optional if you rather have swap files instead of swap drives.
 - remaining for the Linux root partition x86-64 (Code 23), where packages will be installed
@@ -41,9 +41,9 @@ Device            Size    Type
 /dev/nvme0n1p5    1G      Microsoft recovery environment
 /dev/nvme0n1p6    1G      Linux extended boot
 /dev/nvme0n1p7    8G      Linux swap
-/dev/nvme0n1p8    1T      Linux root (x86-64)    
+/dev/nvme0n1p8    1T      Linux root (x86-64)
 ```
 
 ## Next steps
 
-- [Install Arch on a Windows First Dual Boot PC](./installing-windows-first-dual-boot.md)
+- [Using GRUB for Arch](./using-grub-for-arch.md)

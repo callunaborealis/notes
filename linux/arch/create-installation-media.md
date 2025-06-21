@@ -51,6 +51,7 @@ sudo dd if=/Users/calluna/Downloads/archlinux-2022.04.05-x86_64.iso of=/dev/disk
 
 - [Installing Arch Linux for a Windows Dual Boot](./installing-windows-first-dual-boot.md)
 - [Initialising partitions](./initialising-partitions.md)
+- [Setting up UEFI GPT](./setting-up-uefi-gpt.md)
 - [Uninstalling Arch Linux for a Windows Dual Boot](./uninstalling-windows-first-dual-boot.md)
 
 ## References

@@ -4,7 +4,7 @@
 
 - [Created and booted into installation media](./create-installation-media.md)
 - [1G EFI is created as the first drive](./initialising-partitions.md) with [an existing Windows 11 first set up](./uninstalling-windows.md)
-- [UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md). If not, [set up partitions first](./initialising-partitions.md).
+- [UEFI/GPT is set up with the new partitions formatted into a extendable boot loader drive, swap drive and root drive](./setting-up-uefi-gpt.md). If not, [set up partitions first](./initialising-partitions.md)
 
 ## Steps
 
@@ -137,10 +137,18 @@ mkinitcpio -P
 pacman -S linux-firmware-qlogic
 # root@archiso
 su - you
-# Note AUR packages, e.g. xhci_pci, wd719x, aic94xx
+# Note AUR packages, e.g. xhci_pci, wd719x, aic94xx, ast
 # You can use the AUR meta package `mkinitcpio-firmware`, but it will install firmware packages not
 # raised in the mkinitcpio warnings, which is likely to be unnecessary.
-yay -S upd72020x-fw wd719x-firmware aic94xx-firmware
+yay -S upd72020x-fw wd719x-firmware aic94xx-firmware ast-firmware
+exit
+# root@archiso
+# Now we ensure consolefont will not complain about not being able
+# to set the font at boot by adding the bottom 2 lines
+echo "FONT=lat2-16" >> /etc/vconsole.conf
+echo "FONT_MAP=8859-2" >> /etc/vconsole.conf 
+su - you
+# you@archiso
 exit # you@archiso on /mnt -> root@archiso on /mnt
 mkinitcpio -P
 exit # root@archiso on /mnt -> root@archiso on /
@@ -167,7 +175,8 @@ Install the `xorg` desktop environment. Optionally we can use wayland later, but
 
 ```bash
 # root@new-arch-partition
-# This installs xorg-apps and xorg-server
+# This installs xorg related dependencies and xorg-server
+# Choose man-db (default)
 pacman -S xorg
 # Print the graphics card
 lspci -k | grep -A 2 -E "(VGA|3D)"
@@ -208,8 +217,6 @@ vim /etc/pacman.conf
 # ------
 pacman -Syu # multilib should be now listed as a package database.
 
-
-# We do not install nvidia and nvidia-utils as it breaks
 pacman -S nvidia nvidia-utils
 # We need to run mkinitcpio -P after nvidia updates so we put this in a pacman hook
 mkdir /etc/pacman.d/hooks
@@ -254,7 +261,7 @@ successfully in the future.
 
 ```bash
 vim /etc/mkinitcpio.conf
-##
+##  
 # See https://wiki.archlinux.org/title/Mkinitcpio#COMPRESSION for other supported algorithms
 # COMPRESSION=zstd
 # COMPRESSION_OPTIONS=(-v -5 --long)
@@ -270,8 +277,10 @@ pacman -S plasma-meta
 
 For providers for every dependency choice in `plasma-meta`:
 
+- Choose `qt6-multimedia-ffmpeg` over `qt6-multimedia-gstreamer`. The `ffmpeg` variant [is default](https://doc.qt.io/qt-6/qtmultimedia-index.html#the-ffmpeg-backend) while the `gstreamer` backend is only available on Linux and only recommended for **embedded applications**. See [Qt Multimedia Native Backends](https://doc.qt.io/qt-6/qtmultimedia-index.html#native-backends) documentation here
 - Choose `jack2` over `pipewire-jack` due to superior feature offerings. See https://wiki.archlinux.org/title/JACK_Audio_Connection_Kit#Comparison_of_JACK_implementations
 - Choose `noto-fonts`. Really just personal preference.
+- Choose `phonon-qt6-vlc` if you require more supported features like streaming and transcoding (or if you like VLC player in general) while `phonon-qt6-mpv` focuses on core playback functionality and customisation and is considered more lightweight and performant option derived from MPV
 - Choose `wireplumber`. Even [`pipewire-media-session` devs recommend it](https://gitlab.freedesktop.org/pipewire/media-session#pipewire-media-session).
 - Choose `phonon-qt5-gstreamer`. See [the wiki](https://wiki.archlinux.org/title/KDE#Which_backend_should_I_choose?) and the [feature set comparison here](https://community.kde.org/Phonon/FeatureMatrix). Since I don't have or intend to get BluRay, `phonon-qt5-gstreamer` is the obvious choice for me.
 
@@ -347,6 +356,7 @@ sudo pacman -S firefox firefox-developer-edition
 
 ```bash
 pacman -S steam
+# For the lib32-vulkan-driver, choose the variant with the same brand as your GPU (e.g. lib32-nvidia-utils)
 ```
 
 <hr />
