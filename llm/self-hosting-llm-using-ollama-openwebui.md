@@ -35,6 +35,9 @@ ollama run llava:7b-v1.6-mistral-q5_1
 sudo pacman -S docker
 sudo systemctl enable --now docker.service
 sudo usermod -aG docker $USER
+groups $USER # should print $USER : $USER sudo docker
+# Save changes to newly created docker group
+newgrp docker
 # Ensures Docker runtime is integrated with Nvidia drivers
 sudo pacman -S nvidia-container-toolkit
 
