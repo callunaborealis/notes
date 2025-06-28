@@ -178,6 +178,10 @@ Install the `xorg` desktop environment. Optionally we can use wayland later, but
 # This installs xorg related dependencies and xorg-server
 # Choose man-db (default)
 pacman -S xorg
+# As of 20 June 2025, wayland session will only be installed by default. Since kwin has been split
+# into kwin-wayland and kwin-x11, users need to install plasma-x11-session manually
+pacman -S plasma-x11-session
+
 # Print the graphics card
 lspci -k | grep -A 2 -E "(VGA|3D)"
 # Check https://www.nvidia.com/en-us/drivers/unix/legacy-gpu/ if the card is listed.
