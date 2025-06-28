@@ -5,8 +5,9 @@
 `ollama`: LLM server and Docker-like CLI to manage LLMs. Supports quantization by default. Also supports GPU acceleration via CUDA. See <https://ollama.com/>. 
 
 ```sh
-# Install pyenv, allows different python versions
-yay -S pyenv
+# Install pyenv, allows different python versions. tk provides
+# the tktoolkit
+yay -S pyenv tk
 pyenv install 3.11
 # Required if pip package manager going to be used
 pyenv global 3.11
