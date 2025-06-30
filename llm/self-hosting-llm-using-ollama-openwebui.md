@@ -56,7 +56,7 @@ docker run -d \
  --volume open-webui:/app/backend/data \
  --env OLLAMA_BASE_URL=http://127.0.0.1:11434 \
  --name open-webui \
- --restart always \
+ --restart no \
  ghcr.io/open-webui/open-webui:cuda
 ```
 
@@ -69,7 +69,7 @@ this flag first.
   - `open-webui`'s data (`openwebui_data:/app/backend/data`).
   - This will preserve models downloaded or configs saved on container restart
 
-- Optional: `--restart always` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time.
+- Optional: `--restart always` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time. Set to `--restart no` if you want to use `systemctl` to handle starting on boot.
 - Adding a release tag:
   - Cuda release: Uses CUDA driver to use your GPU acceleration
   - Stable release: Using the `:ollama` tag provides `ollama` support out of the box
@@ -121,7 +121,6 @@ Setup `open-webui` as a `systemd` service
 sudo vim /etc/systemd/system/open-webui.service
 ```
 
-
 ```vim
 [Unit]
 Description=open-webui
@@ -130,19 +129,21 @@ Requires=docker.service ollama.service
 
 [Service]
 Restart=always
-ExecStart=/usr/bin/docker run -d \
- --publish 3000:8080 \
- --gpus=all \
- --volume ollama:/root/.ollama \
- --volume open-webui:/app/backend/data \
- --env OLLAMA_BASE_URL=http://127.0.0.1:11434 \
- --name open-webui \
- --restart always \
- ghcr.io/open-webui/open-webui:ollama
+ExecStart=/usr/bin/docker start open-webui
 ExecStop=/usr/bin/docker stop open-webui
 
 [Install]
 WantedBy=multi-user.target
+```
+
+Check if docker automatically already starts `open-webui` or if you have set `--restart always` when running the open-webui image for the first time above:
+
+```sh
+# Checks if open-webui will restart automatically
+docker ps -a --format '{{.Names}}' | while read name; do policy=$(docker inspect -f '{{.HostConfig.RestartPolicy.Name}}' "$name"); echo "$name: $policy"; done
+# If you see "open-webui: always" and want to always only manually start docker or leave it to `systemctl`:
+docker update --restart=no open-webui
+# Now when checking it you should see "open-webui: no"
 ```
 
 ```sh
