@@ -154,15 +154,24 @@ systemctl status ollama
 systemctl status open-webui
 ```
 
-## Updating `open-webui`
+## Removing `open-webui` (and `ollama`) for a clean reset
 
 ```sh
 docker stop open-webui
 docker container open-webui
 docker rmi $OPEN_WEBUI_HASH
-# If either commands result in a "Error response from daemon: conflict: unable to delete <image hash> (must be forced) - image is being used by stopped container <container hash>",
-# try:
+```
+If either commands result in a `"Error response from daemon: conflict: unable to delete <image hash>` (must be forced) - image is being used by stopped container <container hash>", try flushing all dangling containers first:
+```sh
 docker container prune
-# If you need to also remove the locally stored knowledge base and saved training data:
+# Add `--all` flag to list both running and stopped or exited containers
+docker ps -a
+# In the event the above does not work even though the container is
+# not longer listed, use a `--force` flag:
+docker container prune -f
+```
+
+If you need to also remove the locally stored knowledge base and saved training data:
+```sh
 docker volume prune
 ```
