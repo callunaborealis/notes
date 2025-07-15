@@ -202,3 +202,24 @@ If you need to also remove the locally stored knowledge base and saved training 
 ```sh
 docker volume prune
 ```
+
+## Updating `open-webui`
+
+Stop and remove any existing containers.
+
+```sh
+docker stop open-webui
+docker rm open-webui
+```
+
+Optional if space is a constraint. Remove any old images used previously.
+
+```sh
+docker rmi ghcr.io/open-webui/open-webui:cuda
+```
+
+Pull the latest image.
+
+```sh
+docker pull ghcr.io/open-webui/open-webui:cuda
+```
