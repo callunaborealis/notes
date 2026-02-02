@@ -3,6 +3,7 @@
 ## Pre-requisites
 
 - [Created and booted into installation media](./create-installation-media.md)
+- [Setting up UEFI GPT](./setting-up-uefi-gpt.md)
 
 ## Creating partition tables with `fdisk`
 
@@ -26,7 +27,6 @@ mkswap -L "swap" /dev/swap_part
 
 ## Next steps
 
-- [Setting up UEFI GPT](./setting-up-uefi-gpt.md)
 - [Installing Arch Linux for a Windows Dual Boot](./installing-windows-first-dual-boot.md)
 
 ## References

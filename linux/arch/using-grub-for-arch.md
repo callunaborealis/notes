@@ -2,6 +2,10 @@
 
 ## UEFI / GPT (Windows Dual Boot)
 
+### Prerequisites
+
+- [Setting up UEFI GPT](./setting-up-uefi-gpt.md)
+
 ```bash
 # root@archiso
 arch-chroot /mnt
@@ -13,6 +17,7 @@ Mount the drives, then run `bootctl` to create the boot entries.
 
 ```bash
 # root@archiso
+mount --mkdir /dev/root_part /mnt
 mount --mkdir /dev/windowsbootloader_part /mnt/efi
 mount --mkdir /dev/xbootldr_part /mnt/boot
 # Note: You can remove --mkdir flag on subsequent re-mountings
