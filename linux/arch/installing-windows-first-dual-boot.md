@@ -385,6 +385,11 @@ Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils`
 
 Install the AUR package `ttf-twemoji` instead of `ttf-twemoji-color`, as SVG font emojis will only output mono coloured emojis.
 
+```sh
+# Use this emoji everywhere (optional if you don't mind having different emojis)
+sudo ln -sf /usr/share/fontconfig/conf.avail/75-twemoji.conf /etc/fonts/conf.d/75-twemoji.conf
+```
+
 ### No memory error when running `sudo mkinitcpio -P`
 
 ```shell
