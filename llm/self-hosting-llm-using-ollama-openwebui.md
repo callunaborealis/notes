@@ -170,6 +170,17 @@ systemctl status ollama
 systemctl status open-webui
 ```
 
+## If models disappear from custom `ollama` location
+
+Check to see if there are sufficient permissions for `ollama` as a user, especially if `/var/lib/ollama` is symbolically linked to the custom `ollama` location.
+
+Check if symbolic link to `ollama` custom location has not been replaced by a plain folder, which will happen if `ollama` was reinstalled.
+
+```sh
+sudo chown ollama:ollama /var/lib/ollama
+sudo chmod 755 /custom/location/to/ollama
+```
+
 ## Removing `open-webui` (and `ollama`) for a clean reset
 
 ```sh
