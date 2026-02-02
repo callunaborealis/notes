@@ -381,6 +381,42 @@ pacman -S steam
 Choose the last packages (Do not install `nvidia-utils` and `lib32-nvidia-utils` unless you managed to blacklist them properly via Xorg). Otherwise you will face a problem booting into SDDM when `nouveau` was blacklisted by `nvidia-utils` and you require to boot into SDDM manually via `modprobe nouveau`.
 </details>
 
+## Bluetooth headsets
+
+Install `bluez`, `bluez-utils` (required for `bluetoothctl`).
+
+Start `bluetoothctl`.
+
+```sh
+sudo systemctl enable bluetoothctl
+sudo systemctl start bluetoothctl
+```
+
+Now check Bluetooth daemon logs to see if we have any errors thrown first:
+
+```sh
+journalctl -b -u bluetooth --no-pager | tail -n 200
+```
+
+In the event we see something like this:
+```sh
+April 24 09:22:00 teal-gaming-pc bluetoothd[240288]: src/profile.c:ext_start_servers() RFCOMM server failed for Hands-Free Voice gateway: socket(STREAM, RFCOMM): Protocol not supported (93)
+April 24 09:22:00 teal-gaming-pc bluetoothd[240288]: src/profile.c:ext_start_servers() RFCOMM server failed for Hands-Free unit: socket(STREAM, RFCOMM): Protocol not supported (93)
+```
+
+or checking rfcomm results in:
+
+```sh
+rfcomm
+# Can't open RFCOMM control socket: Protocol not supported
+```
+
+Consider restarting the PC especially if there was a recent kernel update in the same session.
+
+
+
+See <https://wiki.archlinux.org/title/Bluetooth> for more.
+
 ### Twitter like SVG fonts
 
 Install the AUR package `ttf-twemoji` instead of `ttf-twemoji-color`, as SVG font emojis will only output mono coloured emojis.
@@ -419,20 +455,20 @@ You might encounter missing firmware packages, e.g.
   -> Running build hook: [keyboard]
 ```
 
-| Module | Package |
-| -- | -- |
-| `aic94xx` | `aic94xx-firmware` (AUR) |
-| `ast` | `ast-firmware` (AUR) |
-| `bfa` | `linux-firmware-qlogic` |
-| `bnx2x` | `linux-firmware-bnx2x` |
-| `liquidio` | `linux-firmware-liquidio` |
+| Module           | Package                   |
+|------------------|---------------------------|
+| `aic94xx`        | `aic94xx-firmware` (AUR)  |
+| `ast`            | `ast-firmware` (AUR)      |
+| `bfa`            | `linux-firmware-qlogic`   |
+| `bnx2x`          | `linux-firmware-bnx2x`    |
+| `liquidio`       | `linux-firmware-liquidio` |
 | `mlxsw_spectrum` | `linux-firmware-mellanox` |
-| `nfp` | `linux-firmware-nfp` |
-| `qed` | `linux-firmware-qlogic` |
-| `qla1280` | `linux-firmware-qlogic` |
-| `qla2xxx` | `linux-firmware-qlogic` |
-| `wd719x` | `wd719x-firmware` (AUR) |
-| `xhci_pci` | `upd72020x-fw` (AUR) |
+| `nfp`            | `linux-firmware-nfp`      |
+| `qed`            | `linux-firmware-qlogic`   |
+| `qla1280`        | `linux-firmware-qlogic`   |
+| `qla2xxx`        | `linux-firmware-qlogic`   |
+| `wd719x`         | `wd719x-firmware` (AUR)   |
+| `xhci_pci`       | `upd72020x-fw` (AUR)      |
 
 See [5.4 Possibly missing firmware for module XXXX in the mkinitcpio docs](https://wiki.archlinux.org/title/Mkinitcpio) for an updated list of packages
 
