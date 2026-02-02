@@ -221,7 +221,16 @@ vim /etc/pacman.conf
 # ------
 pacman -Syu # multilib should be now listed as a package database.
 
-pacman -S nvidia nvidia-utils
+```
+
+Depending on your GPU make, if your Nvidia GPU is one of the later models (e.g. RTX 5090), you might need to use a different driver (i.e. `nvidia-open` instead of `nvidia`). Refer to:
+- [Nvidia Arch Linux wiki article](https://wiki.archlinux.org/title/NVIDIA)
+- [List of GPUs supported by `nvidia-open` package](https://github.com/NVIDIA/open-gpu-kernel-modules)
+
+```bash
+# nvidia for older GPUs, e.g. RTX 3070
+pacman -S nvidia-open
+pacman -S nvidia-utils
 # We need to run mkinitcpio -P after nvidia updates so we put this in a pacman hook
 mkdir /etc/pacman.d/hooks
 vim /etc/pacman.d/hooks/nvidia.hook
@@ -234,6 +243,7 @@ Operation=Install
 Operation=Upgrade
 Operation=Remove
 Type=Package
+# Change to nvidia-open depending on the module installed
 Target=nvidia
 Target=linux
 # Change the linux part above and in the Exec line if a different kernel is used
