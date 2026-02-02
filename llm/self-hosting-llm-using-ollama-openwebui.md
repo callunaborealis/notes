@@ -82,6 +82,8 @@ this flag first.
 - `--volume` (or `-v`) to mount 2 bind type volumes:
   - `ollama`'s model data (`/var/lib/ollama:/root/.ollama` (default) or `/somewhere/else/ollama:/root/.ollama` (custom)) which maps the directory with data used by the ollama service. We do not use `ollama:/root/.ollama` stated by the `open-webui` repo `README.md` since `ollama` was already installed separately before installing `open-webui`.
   - `open-webui`'s data (`open-webui:/app/backend/data` (default) or `/somewhere/else/open-webui:/app/backend/data` (custom)). This keeps all logs, knowledge bases and chat histories from `open-webui` in this directory.
+  - It is important to note because these 2 volumes are bind-mounts of an existing local directory, they will not be listed in `docker volume ls`.
+  - To verify that the 2 bind-mount volumes are created, use `docker inspect open-webui --format '{{range .Mounts}}{{printf "%s: %s\n" .Type (or .Name .Source)}}{{end}}'` to verify both bind type volumes are mounted. 
 
 - Optional: `--restart always` if open-webui should be started on boot. However, it is excluded because we want to manually switch on every time. Set to `--restart no` if you want to use `systemctl` to handle starting on boot.
 - Adding a release tag:
