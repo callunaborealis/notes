@@ -148,3 +148,16 @@ sudo systemctl enable --now ollama.service open-webui.service
 systemctl status ollama
 systemctl status open-webui
 ```
+
+## Updating `open-webui`
+
+```sh
+docker stop open-webui
+docker container open-webui
+docker rmi $OPEN_WEBUI_HASH
+# If either commands result in a "Error response from daemon: conflict: unable to delete <image hash> (must be forced) - image is being used by stopped container <container hash>",
+# try:
+docker container prune
+# If you need to also remove the locally stored knowledge base and saved training data:
+docker volume prune
+```
