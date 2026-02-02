@@ -1,5 +1,12 @@
 # Setting up a reverse proxy between AWS EC2 Ubuntu instance to MikroTik router running RouterOS v7.18 via WireGuard
 
+Variables: 
+
+`<AWS_EC2_PUBLIC_IP>`: Public IP of AWS EC2 instance
+`<MIKROTIK_ROUTER_WG_GEN_PRIVATE_KEY>`: Private key generated via MikroTik RouterOS UI
+`<MIKROTIK_ROUTER_WG_GEN_PUBLIC_KEY>`: Public key generated via MikroTike RouterOS UI
+
+
 On EC2 running Ubuntu:
 
 ```sh
