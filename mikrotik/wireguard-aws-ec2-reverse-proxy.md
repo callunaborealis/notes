@@ -129,13 +129,13 @@ In MikroTik, we create a new WireGuard interface (any name, e.g. `ec2_via_wg_int
 ```sh
 # In RouterOS v7, keys will be generated on interface creation
 /interface/wireguard add name=ec2_via_wg_interface listen-port=51820 comment="tunnel to ec2 instance"
-# Expose private key to copy into ec2
+# Expose <MIKROTIK_ROUTER_WG_GEN_PUBLIC_KEY> to copy into ec2
 /interface/wireguard print detail where name=ec2_via_wg_interface
 # ...should print:
 Flags: X - disabled; R - running 
  0  R ;;; tunnel to ec2 instance
       name="ec2_via_wg_interface" mtu=1420 listen-port=51820 private-key="<MIKROTIK_ROUTER_WG_GEN_PRIVATE_KEY>" public-key="<MIKROTIK_ROUTER_WG_GEN_PUBLIC_KEY>" 
-# !! Do note that <MIKROTIK_ROUTER_WG_GEN_PRIVATE_KEY> has an "=" character behind it !!
+# !! Do note that <MIKROTIK_ROUTER_WG_GEN_PUBLIC_KEY> has an "=" character behind it !!
 
 # Add address to ARP
 /ip/address add address=10.200.200.2/30 interface=ec2_via_wg_interface comment="to ec2 instance via wg"
