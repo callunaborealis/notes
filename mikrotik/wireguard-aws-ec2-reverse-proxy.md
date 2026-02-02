@@ -12,6 +12,53 @@ sudo ufw enable
 
 ```
 
+Set up nginx with support for websockets:
+
+```conf
+##
+## This can't be placed in /etc/nginx/nginx.conf
+## because $http_upgrade is not defined in `nginx.conf`
+##
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
+server {
+    listen 80;
+    server_name your_server.com;
+
+    location / {
+        proxy_pass http://10.200.200.2:3000;
+
+        # ---- websockets ----
+        proxy_http_version 1.1;              # keep-alive + WS handshake
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+
+        # ---- Standard reverse proxy headers ----
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Optional: Keep long-lived sockets from timing out
+        proxy_read_timeout 60s;
+    }
+}
+```
+
+```sh
+sudo ln -s /etc/nginx/sites-available/app.example.com /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+Add HTTPS:
+
+```sh
+sudo certbot --nginx -d app.example.com
+```
+
 Set up WireGuard keys and config:
 
 ```sh
