@@ -29,6 +29,21 @@ See how to [set up partitions here](./initialising-partitions.md).
 - remaining for the Linux root partition x86-64 (Code 23), where packages will be installed
 - home partition (if ever needed), for personal files independent of OS
 
+### Sample ideal partition table
+
+```
+Disklabel type: gpt
+Device            Size    Type
+/dev/nvme0n1p1    1G      EFI System
+/dev/nvme0n1p2    16M     Microsoft reserved
+/dev/nvme0n1p3    1G      Microsoft basic data
+/dev/nvme0n1p4    1G      Microsoft recovery environment
+/dev/nvme0n1p5    1G      Microsoft recovery environment
+/dev/nvme0n1p6    1G      Linux extended boot
+/dev/nvme0n1p7    8G      Linux swap
+/dev/nvme0n1p8    1T      Linux root (x86-64)    
+```
+
 ## Next steps
 
 - [Install Arch on a Windows First Dual Boot PC](./installing-windows-first-dual-boot.md)
