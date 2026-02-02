@@ -35,6 +35,10 @@ Primary key fingerprint: 4AA4 767B BC9C 4B1D 18AE  28B7 7F2D 434B 9741 E8AC
 ```bash
 # macOS
 df -h # Find disk name / partition name to write bootable drive
+
+# If resource busy, unmount the disk first
+sudo diskutil unmount /dev/disk2
+
 sudo dd if=/Users/calluna/Downloads/archlinux-2022.04.05-x86_64.iso of=/dev/disk2 bs=1m
 ```
 
