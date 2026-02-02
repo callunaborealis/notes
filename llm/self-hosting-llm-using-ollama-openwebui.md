@@ -65,6 +65,7 @@ docker run -d --name open-webui --gpus=all -p 3000:8080 \
 docker run -d \
   --env PORT=3000 \
   --network=host \
+  --device nvidia.com/gpu=all \
   --gpus=all \
   --volume /somewhere/else/ollama:/root/.ollama \
   --volume /somewhere/else/open-webui:/app/backend/data \
@@ -77,6 +78,7 @@ docker run -d \
 
 - `--env PORT=3000` (or `-e`) sets the port at `3000`. Alternatively, we can use `--publish 3000:8080`to map the container port 8080 to your machine port 3000 but this is ignored with `--network=host` flag
 - `--network=host` is set only if we are unable to connect to the ollama API served locally outside the container
+- `--device nvidia.com/gpu=all` required especially if legacy related errors are returned when attempting to start the docker container. Previously without this flag, the legacy runtime path relies on the pre-start hook that runs `ldconfig` inside containers (making this fragile since host or userland libraries are misaligned). Using the "CDI" path will bypass this shim in order to expose the GPU device nodes into the container, side stepping any issue due to mismatching nvidia libraries
 - `--gpus=all` passes our GPU into the container (requires the container toolkit, which we installed). However, if Docker hangs up while running open-webui, consider removing
 this flag first.  
 - `--volume` (or `-v`) to mount 2 bind type volumes:
